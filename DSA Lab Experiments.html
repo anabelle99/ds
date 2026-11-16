@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DSA Lab Experiments</title>
+<style>
+:root{color-scheme:light;--bg:#fdfbff;--off:#f5f1fc;--off2:#e6f3ee;--line:#e0d9f0;--ink:#2f2d3f;--mute:#6e6b82;--btn:#6c63b0;--btnh:#5a5198;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#fdfbff 0%,#f6f2fb 100%);min-height:100vh;color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif}
+header{background:var(--off);border-bottom:1px solid var(--line);padding:28px 5vw;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+h1{margin:0;font-size:clamp(24px,4vw,36px)}
+.sub{color:var(--mute);margin-top:6px}
+.tools{display:flex;gap:12px;flex-wrap:wrap}
+input{padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:15px;min-width:260px;color:var(--ink)}
+button{font:inherit;cursor:pointer}
+.ghost{padding:12px 20px;border:1px solid var(--line);background:var(--off2);border-radius:12px;font-weight:600;color:var(--ink)}
+main{padding:28px 5vw 60px;max-width:1400px;margin:auto}
+.panel{background:var(--off);border:1px solid var(--line);border-radius:24px;padding:28px}
+.panel h2{margin:0 0 6px;font-size:26px}
+.panel p{margin:0 0 22px;color:var(--mute)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.card h3{margin:0;font-size:19px;display:flex;align-items:center;gap:8px}
+.tag{font-size:11px;background:#fde9df;border:1px solid #f6d3c2;border-radius:6px;padding:2px 8px;color:var(--mute)}
+.card .d{color:var(--mute);font-size:14px;flex:1;min-height:38px}
+.copy{padding:12px;border:0;border-radius:10px;background:var(--btn);color:#fff;font-weight:600}
+.copy:hover{background:var(--btnh)}
+.copy.ok{background:#4f8f78}
+section{margin-top:28px}
+details{background:var(--off);border:1px solid var(--line);border-radius:16px;margin-bottom:14px;overflow:hidden}
+summary{padding:16px 20px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+summary .copy{padding:8px 16px;font-size:14px}
+pre{margin:0;padding:18px 20px;background:#fff;border-top:1px solid var(--line);overflow-x:auto;font:13px/1.55 Consolas,"Courier New",monospace;max-width:100%}
+.none{display:none;color:var(--mute);margin-top:18px}
+</style>
+</head>
+<body>
+<header>
+<div><h1>DSA Lab Experiments</h1><div class="sub" id="count"></div></div>
+<div class="tools"><input id="q" placeholder="Search experiment #, title, or code..."><button class="ghost" id="col">Collapse All</button></div>
+</header>
+<main>
+<div class="panel"><h2>Quick One-Click Copy Panel</h2><p>Copy complete C source code with one click.</p><div class="grid" id="grid"></div><div class="none" id="none">No matching experiments.</div></div>
+<section><h2>Source Code</h2><div id="list"></div></section>
+</main>
+<script>
+const C1=String.raw`#include <stdio.h>
+#include <stdlib.h>
+int n;
+int arr[50];
+int key;
+void linearSearch()
+{
+    int found = 0, key;
+    printf("\nEnter Value to be searched : ");
+    scanf("%d", &key);
+    for(int i = 0; i < n; i++)
+    {
+        if(arr[i] == key)
+        {
+            found = 1;
+            printf("\nStudent attended the training program and sat on seat %d\n", i + 1);
+            break;
+        }
+    }
+    if(found == 0)
+    {
+        printf("Student did not attend the training program\n");
+    }
+}
+void binarySearch()
+{
+    int found = 0, key;
+    printf("\nEnter Value to be searched : ");
+    scanf("%d", &key);
+    int high = n-1, low = 0;
+    int mid;
+    while(low <= high)
+    {
+        mid = (high + low)/2;
+        if(arr[mid] == key)
+        {
+            found = 1;
+            printf("\nStudent attended the training program and sat on seat %d\n", mid+1);
+            break;
+        }
+        if(key < arr[mid])
+            high = mid - 1;
+
+        if(key > arr[mid])
+            low = mid + 1;
+
+    }
+    if(found == 0)
+    {
+        printf("Student did not attend the training program\n");
+    }
+
+}
+int main()
+{
+    int ch;
+    printf("Enter number of students : ");
+    scanf("%d", &n);
+    printf("Enter Roll no of students : ");
+    for(int i=0; i<n; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+    do{
+        printf("1.Linear Search\n2.Binary Search\n3.Exit");
+        printf("\nEnter your choice : ");
+        scanf("%d", &ch);
+        switch(ch)
+        {
+            case 1: linearSearch();
+                    break;
+            case 2: binarySearch();
+                    break;
+            case 3: exit(0);
+        }
+    }while(ch != 4);
+    linearSearch();
+    return 0;
+}
+`;
+const C2=String.raw`#include <stdio.h>
+#include <stdlib.h>
+float percent[50];
+int n;
+void display()
+{
+    printf("\nPercentage of students are : \n");
+    for(int i=0; i<n; i++)
+    {
+        printf("%.2f ", percent[i]);
+    }
+}
+void selectionSort()
+{
+    float temp;
+    for(int i=0; i<n-1; i++)
+    {
+        int min = i;
+        for(int j=i+1; j<n; j++)
+        {
+            if(percent[j] < percent[min])
+            {
+                min = j;
+            }
+        temp = percent[i];
+        percent[i] = percent[min];
+        percent[min] = temp;
+        }
+    }
+}
+void bubbleSort()
+{
+    float temp;
+    for(int i=0; i<n-1; i++)
+    {
+        for(int j=0; j<n-i-1; j++)
+        {
+            if(percent[j] > percent[j+1])
+            {
+                temp = percent[j];
+                percent[j] = percent[j+1];
+                percent[j+1] = temp;
+            }
+        }
+    }
+}
+void topScores()
+{
+    printf("Top 5 scores are : ");
+    for(int i=n-1; i>=n-5; i--)
+    {
+        printf("%.2f\n", percent[i]);
+    }
+}
+
+int main()
+{
+    int ch;
+    printf("Enter number of students : ");
+    scanf("%d", &n);
+    printf("\nEnter percentage of students : ");
+    for(int i=0; i<n; i++)
+    {
+        scanf("%f", &percent[i]);
+    }
+    display();
+    do{
+        printf("\n1.Selection Sort\n2.Bubble Sort\n3.Top 5 scores\n4.Exit");
+        printf("\nEnter your choice : ");
+        scanf("%d", &ch);
+        switch(ch)
+        {
+            case 1: selectionSort();
+                    display();
+                    break;
+            case 2: bubbleSort();
+                    display();
+                    break;
+            case 3: topScores();
+                    break;
+            case 4: exit(0);
+        }
+        }while(ch != 5);
+    return 0;
+}
+`;
+const C3=String.raw`#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#define size 10
+
+int hash[size];
+void linearProbing(int key)
+{
+    int i=0;
+    int index;
+    int h = key%10;
+
+    while(i<=10) 
+    {
+        index = (h+i)%10;
+        if(hash[index] == -1)
+        {
+            hash[index] = key;
+            break;
+        }
+        else
+            i++;
+    }
+}
+void quadraticProbing(int key)
+{
+    int i=0;
+    int index;
+    int h = key%10;
+
+    while(i<=10) 
+    {
+        index = (h+(i*i))%10;
+        if(hash[index] == -1)
+        {
+            hash[index] = key;
+            break;
+        }
+        else
+            i++;
+    }
+}
+void doublehashing(int key)
+{
+    int i=0;
+    int index;
+    int h1 = key%10;
+    int h2 = 7-key%7;
+
+    while(i<=10) 
+    {
+        index = (h1+(h2*i))%10;
+        if(hash[index] == -1)
+        {
+            hash[index] = key;
+            break;
+        }
+        else
+            i++;
+    }
+}
+void display()
+{
+    for(int i=0; i<10; i++)
+    {
+        printf("Client %d\t%d\n", i+1,hash[i]);  
+    }
+}
+int main()
+{
+    int n,key;
+    int ch;
+    printf("Enter number of clients: ");
+    scanf("%d", &n);
+    for(int i=0; i<10; i++)
+    {
+        hash[i] = -1;
+    }
+    do{
+    printf("\n1.Linear Probing\n2.Quadratic Probing\n3.Double Hashing\n4.Exit");
+    printf("\nEnter your choice: ");
+    scanf("%d", &ch);
+    printf("Enter the telephone numbers of clients: ");
+    switch(ch)
+        {
+            case 1:
+                for(int i=0; i<n; i++)
+                {
+                    scanf("%d", &key);
+                    linearProbing(key);
+                }
+                display();
+                break;
+            
+            case 2:
+                for(int i=0; i<n; i++)
+                {
+                    scanf("%d", &key);
+                    quadraticProbing(key);
+                }
+                display();
+                break;
+            
+            case 3:
+                for(int i=0; i<n; i++)
+                {
+                    scanf("%d", &key);
+                    doublehashing(key);
+                }
+                display();
+                break;
+            case 4:
+                exit(0);
+        }      
+        }while(ch != 5);
+    
+    return 0;
+}
+`;
+const C45=String.raw`#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int seatno;
+    struct node *prev;
+    struct node *next;
+};
+struct node *head = NULL;
+void createSeats()
+{
+    struct node *newnode, *temp;
+    for(int i=1; i<=10; i++)
+    {
+        newnode = (struct node *)malloc(sizeof(struct node));
+        newnode->seatno = i;
+        newnode->prev = NULL;
+        newnode->next = NULL;
+        if(head == NULL)
+        {
+            head = newnode;
+            temp = head;
+        }
+        else
+        {
+            temp->next = newnode;
+            newnode->prev = temp;
+            temp = newnode;
+        }
+    }
+}
+void display()
+{
+    struct node *temp;
+    temp = head;
+    printf("Available seats are :\n");
+    while(temp != NULL)
+    {
+        printf("%d <->",temp->seatno);
+        temp = temp->next;
+    }
+    printf("NULL");
+}
+void bookSeat()
+{
+    struct node *temp;
+    int seatno;
+    temp = head;
+    if(head == NULL)
+    {
+        printf("No seats available");
+    }
+    printf("Enter seat no :");
+    scanf("%d", &seatno);
+    if(seatno == 1)
+    {
+        head = head->next;
+        free(temp);
+    }
+    if(seatno == 10)
+    {
+        while(temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        free(temp);
+    }
+    while(temp->seatno != seatno)
+    {
+        temp = temp->next;
+    }
+    temp->prev->next = temp->next;
+    temp->next->prev = temp->prev;
+    free(temp);
+}
+void cancelBooking()
+{
+    struct node *newnode, *temp;
+    int seatno;
+    temp = head;
+    newnode = (struct node*)malloc(sizeof(struct node));
+    printf("Enter seat no : ");
+    scanf("%d", seatno);
+    if(seatno == 1)
+    {
+        head = newnode;
+    }
+    else
+    {
+        while(temp->seatno != seatno)
+        {
+            temp = temp->next;
+        }
+        temp->next = newnode;
+        newnode->prev = temp;
+    }
+}
+int main()
+{
+    createSeats();
+    int ch;
+    do
+    {
+        printf("\n\n--- MENU ---");
+        printf("\n1. Display Available Seats");
+        printf("\n2. Book Seat");
+        printf("\n3. Cancel Booking");
+        printf("\n4. Exit");
+        printf("\nEnter your Choice: ");
+        scanf("%d", &ch);
+        switch(ch)
+        {
+            case 1:
+                display();
+                break;
+            case 2:
+                bookSeat();
+                display();
+                break;
+            case 3:
+                cancelBooking();
+                display();
+                break;
+            case 4:
+                printf("Program Ended");
+                break;
+        }
+    } while(ch != 5);
+    return 0;
+}
+`;
+const C6=String.raw`/* Experiment 6: Infix to Postfix Conversion and Evaluation using Stack
+   Operators: + - *   Operands: single characters (digits for evaluation) */
+#include <stdio.h>
+
+#define MAX 50
+
+int stack[MAX];     /* one array-based stack used by both operations */
+int top = -1;
+char infix[MAX];
+char postfix[MAX];
+
+/* Function declarations */
+void push(int x);
+int pop(void);
+int precedence(char c);
+int isOperand(char c);
+void readInfix(void);
+void infixToPostfix(void);
+void evaluatePostfix(void);
+
+void push(int x)
+{
+    if (top == MAX - 1)
+    {
+        printf("\nStack Overflow");
+        return;
+    }
+    top++;
+    stack[top] = x;
+}
+
+int pop(void)
+{
+    int x;
+    if (top == -1)
+    {
+        printf("\nStack Underflow");
+        return 0;
+    }
+    x = stack[top];
+    top--;
+    return x;
+}
+
+/* Higher number = higher priority */
+int precedence(char c)
+{
+    if (c == '*')
+        return 2;
+    if (c == '+' || c == '-')
+        return 1;
+    return 0;      /* for '(' */
+}
+
+/* An operand is a single letter or digit */
+int isOperand(char c)
+{
+    if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+        return 1;
+    return 0;
+}
+
+void readInfix(void)
+{
+    printf("Enter infix expression (no spaces, e.g. (2+3)*4): ");
+    scanf("%49s", infix);
+    postfix[0] = '\0';      /* old postfix is no longer valid */
+}
+
+void infixToPostfix(void)
+{
+    int i, k = 0;
+    char ch;
+
+    if (infix[0] == '\0')
+    {
+        printf("Please enter an infix expression first (option 1).");
+        return;
+    }
+    top = -1;
+    for (i = 0; infix[i] != '\0'; i++)
+    {
+        ch = infix[i];
+        if (isOperand(ch))
+            postfix[k++] = ch;                 /* operand goes directly to output */
+        else if (ch == '(')
+            push(ch);
+        else if (ch == ')')
+        {
+            /* pop until '(' is found */
+            while (top != -1 && stack[top] != '(')
+                postfix[k++] = pop();
+            if (top == -1)
+            {
+                printf("Invalid expression: ')' without matching '('.");
+                postfix[0] = '\0';
+                return;
+            }
+            pop();                             /* remove '(' */
+        }
+        else if (ch == '+' || ch == '-' || ch == '*')
+        {
+            /* pop operators of higher or equal priority first */
+            while (top != -1 && precedence(stack[top]) >= precedence(ch))
+                postfix[k++] = pop();
+            push(ch);
+        }
+        else
+        {
+            printf("Invalid character '%c' in expression.", ch);
+            postfix[0] = '\0';
+            return;
+        }
+    }
+    /* pop the remaining operators */
+    while (top != -1)
+    {
+        if (stack[top] == '(')
+        {
+            printf("Invalid expression: '(' without matching ')'.");
+            postfix[0] = '\0';
+            return;
+        }
+        postfix[k++] = pop();
+    }
+    postfix[k] = '\0';
+    printf("Postfix expression: %s", postfix);
+}
+
+void evaluatePostfix(void)
+{
+    int i, a, b, result;
+    char ch;
+
+    if (postfix[0] == '\0')
+    {
+        printf("Please convert a valid infix expression first (option 2).");
+        return;
+    }
+    top = -1;
+    for (i = 0; postfix[i] != '\0'; i++)
+    {
+        ch = postfix[i];
+        if (ch >= '0' && ch <= '9')
+            push(ch - '0');                    /* digit character -> number */
+        else if (ch == '+' || ch == '-' || ch == '*')
+        {
+            if (top < 1)                       /* need two operands */
+            {
+                printf("Invalid expression: operator without two operands.");
+                return;
+            }
+            b = pop();                         /* second operand comes out first */
+            a = pop();
+            if (ch == '+')
+                result = a + b;
+            else if (ch == '-')
+                result = a - b;
+            else
+                result = a * b;
+            push(result);
+        }
+        else
+        {
+            printf("Cannot evaluate: '%c' is not a digit (use digits 0-9 only).", ch);
+            return;
+        }
+    }
+    if (top != 0)
+    {
+        printf("Invalid expression: operands left over.");
+        return;
+    }
+    printf("Result = %d", pop());
+}
+
+int main()
+{
+    int choice;
+
+    do
+    {
+        printf("\n\n----- INFIX / POSTFIX MENU -----");
+        printf("\n1. Enter infix expression");
+        printf("\n2. Convert to postfix");
+        printf("\n3. Evaluate postfix");
+        printf("\n4. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                readInfix();
+                break;
+            case 2:
+                infixToPostfix();
+                break;
+            case 3:
+                evaluatePostfix();
+                break;
+            case 4:
+                printf("Exiting...");
+                break;
+            default:
+                printf("Invalid choice!");
+        }
+    } while (choice != 4);
+
+    return 0;
+}
+`;
+const C7=String.raw`#include <stdio.h>
+#include <stdlib.h>
+
+int queue[20];
+int front = -1, rear = -1;
+
+void enqueue()
+{
+    int order;
+    printf("Enter order number: ");
+    scanf("%d", &order);
+
+    if(rear == 19)
+        printf("Queue overflowed");
+
+    if(front == -1)
+        front = 0;
+
+    rear++;
+    queue[rear] = order;
+    printf("Order added successfully!!\n");
+
+}
+void dequeue()
+{
+    if(front == -1)
+        printf("Queue Underflowed");
+
+    if(front == rear)
+    {
+        front = -1;
+        rear = -1;
+    }
+
+    front++;
+}
+
+void display()
+{
+    if(front == -1)
+    {
+        printf("No pending orders\n");
+    }
+    printf("The orders are: ");
+    for(int i=front; i<=rear; i++)
+    {
+        printf("%d ",queue[i]);
+    }
+}
+int main() {
+
+    int ch;
+    do{
+        printf("\n1.Add a job\n2.Delete a job\n3.Display\n4.Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &ch);
+        switch(ch)
+        {
+            case 1:
+                enqueue();
+                display();
+                break;
+            case 2:
+                dequeue();
+                display();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                exit(0);
+        }
+    }while(ch!=5);
+    return 0;
+}
+`;
+const C8=String.raw`#include <stdio.h>
+#include <stdlib.h>
+struct node
+{
+    int data;
+    struct node* left;
+    struct node* right;
+};
+struct node* createnode(int value)
+{
+    struct node* newnode;
+    newnode = (struct node*)malloc(sizeof(struct node));
+
+    newnode->data = value;
+    newnode->left = newnode->right = NULL;
+
+    return newnode;
+}
+struct node* insert(struct node* root, int value)
+{
+    if(root == NULL)
+        return createnode(value);
+
+    if(value < root->data)
+        root->left = insert(root->left, value);
+
+    else
+        root->right = insert(root->right, value);
+
+    return root;
+}
+void inorder(struct node *root)
+{
+    if(root != NULL)
+    {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+int height(struct node *root)
+{
+    if(root == NULL)
+        return 0;
+
+    int lheight = height(root->left);
+    int rheight = height(root->right);
+
+    if(lheight > rheight || lheight == rheight)
+        return lheight+1;
+    else
+        return rheight+1;
+}
+int min(struct node *root)
+{
+    while(root->left != NULL)
+    {
+        root = root->left;
+    }
+    return root->data;
+}
+void mirror(struct node *root)
+{
+    if(root == NULL)
+        return;
+    struct node* temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+    mirror(root->left);
+    mirror(root->right);
+}
+void search(struct node *root,int key)
+{
+    if(root == NULL)
+        printf("Value not found");
+        return;
+    if(key == root->data)
+        printf("Value found");
+        return;
+    if(key < root->data)
+    {
+        search(root->left, key);
+    }
+    else
+    {
+        search(root->right, key);
+    }
+}
+int main() {
+    struct node* root = NULL;
+    int n,value;
+    int key;
+    int ch;
+    printf("Enter the number of nodes: ");
+    scanf("%d", &n);
+    printf("Enter values:\n");
+    for(int i=0; i<n; i++)
+    {
+        scanf("%d", &value);
+        root = insert(root, value);
+    }
+    do{
+        printf("\n1.Insert node\n2.Display Inorder \n3.Height of tree\n4.Minimum data\n5.Mirror tree\n6.Search value\n7.Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &ch);
+        switch(ch)
+        {
+            case 1:
+                printf("Enter the value to insert: ");
+                scanf("%d", &value);
+                insert(root, value);
+                printf("Node inserted successfully");
+                break;
+            case 2:
+                printf("Inorder traversal: ");
+                inorder(root);
+                printf("\n");
+                break;
+            case 3:
+                printf("Height of tree is: %d", height(root));
+                break;
+            case 4:
+                printf("Minimum value in tree is: %d", min(root));
+                break;
+            case 5:
+                mirror(root);
+                printf("Tree is mirrored");
+                break;
+            case 6:
+                printf("Enter value to search: ");
+                scanf("%d", &key);
+                search(root, key);
+                break;
+            case 7:
+                exit(0);
+        }
+    }while(ch!=8);
+    return 0;
+}
+`;
+const C9=String.raw`/* Experiment 9: Flight paths between cities - Adjacency Matrix and
+   connectivity check using BFS */
+#include <stdio.h>
+
+#define MAX 10      /* maximum number of cities */
+
+char city[MAX][20];     /* city names */
+int adj[MAX][MAX];      /* adjacency matrix: 0 = no flight, otherwise cost */
+int n = 0;              /* number of cities (0 = graph not created yet) */
+
+/* Function declarations */
+void createGraph(void);
+void displayMatrix(void);
+void checkConnected(void);
+
+void createGraph(void)
+{
+    int i, j, e, u, v, cost;
+
+    printf("Enter number of cities (1 to %d): ", MAX);
+    scanf("%d", &n);
+    if (n < 1 || n > MAX)
+    {
+        printf("Invalid number of cities!");
+        n = 0;
+        return;
+    }
+
+    for (i = 0; i < n; i++)
+    {
+        printf("Enter name of city %d: ", i + 1);
+        scanf("%19s", city[i]);
+    }
+
+    /* start with no flights */
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            adj[i][j] = 0;
+
+    printf("Enter number of flights: ");
+    scanf("%d", &e);
+
+    printf("Cities: ");
+    for (i = 0; i < n; i++)
+        printf("%d=%s ", i + 1, city[i]);
+
+    for (i = 0; i < e; i++)
+    {
+        printf("\nFlight %d - enter city number 1, city number 2 and cost: ", i + 1);
+        scanf("%d %d %d", &u, &v, &cost);
+        if (u < 1 || u > n || v < 1 || v > n || u == v || cost <= 0)
+        {
+            printf("Invalid flight! Enter it again.");
+            i--;                       /* repeat this flight */
+        }
+        else
+        {
+            adj[u - 1][v - 1] = cost;  /* flight is two-way (undirected graph) */
+            adj[v - 1][u - 1] = cost;
+        }
+    }
+    printf("\nGraph created.");
+}
+
+void displayMatrix(void)
+{
+    int i, j;
+
+    if (n == 0)
+    {
+        printf("Graph is not created yet. Use option 1.");
+        return;
+    }
+    printf("Adjacency Matrix (0 = no flight):\n");
+    printf("%-10s", "");
+    for (i = 0; i < n; i++)
+        printf("%-10s", city[i]);
+    for (i = 0; i < n; i++)
+    {
+        printf("\n%-10s", city[i]);
+        for (j = 0; j < n; j++)
+            printf("%-10d", adj[i][j]);
+    }
+}
+
+/* BFS from city 0. If all n cities get visited, the graph is connected. */
+void checkConnected(void)
+{
+    int visited[MAX], queue[MAX];
+    int front = 0, rear = 0, count = 0;
+    int i, v;
+
+    if (n == 0)
+    {
+        printf("Graph is not created yet. Use option 1.");
+        return;
+    }
+    for (i = 0; i < n; i++)
+        visited[i] = 0;
+
+    visited[0] = 1;            /* start BFS from the first city */
+    queue[rear] = 0;
+    rear++;
+    count = 1;
+
+    printf("BFS order: ");
+    while (front < rear)
+    {
+        v = queue[front];      /* take a city from the queue */
+        front++;
+        printf("%s ", city[v]);
+        for (i = 0; i < n; i++)
+        {
+            if (adj[v][i] != 0 && visited[i] == 0)   /* flight exists, city not visited */
+            {
+                visited[i] = 1;
+                queue[rear] = i;
+                rear++;
+                count++;
+            }
+        }
+    }
+
+    if (count == n)
+        printf("\nGraph is CONNECTED (all %d cities reached).", n);
+    else
+    {
+        printf("\nGraph is NOT connected. Cities not reached: ");
+        for (i = 0; i < n; i++)
+            if (visited[i] == 0)
+                printf("%s ", city[i]);
+    }
+}
+
+int main()
+{
+    int choice;
+
+    do
+    {
+        printf("\n\n----- FLIGHT GRAPH MENU -----");
+        printf("\n1. Create graph (cities and flights)");
+        printf("\n2. Display adjacency matrix");
+        printf("\n3. Check whether graph is connected (BFS)");
+        printf("\n4. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                createGraph();
+                break;
+            case 2:
+                displayMatrix();
+                break;
+            case 3:
+                checkConnected();
+                break;
+            case 4:
+                printf("Exiting...");
+                break;
+            default:
+                printf("Invalid choice!");
+        }
+    } while (choice != 4);
+
+    return 0;
+}
+`;
+const E=[
+{n:1,t:"Linear and Binary Search",d:"Searching roll numbers of students who attended a training program",c:C1},
+{n:2,t:"Selection and Bubble Sort",d:"Sorting student percentages and displaying top 5 scores",c:C2},
+{n:3,t:"Hashing with Collision Handling",d:"Linear probing, quadratic probing and double hashing on telephone numbers",c:C3},
+{n:4,t:"Doubly Linked List: Seat Booking",d:"Book and cancel seats using a doubly linked list",c:C45},
+{n:5,t:"Doubly Linked List: Seat Booking",d:"Book and cancel seats using a doubly linked list",c:C45},
+{n:6,t:"Infix to Postfix and Evaluation",d:"Stack based conversion and evaluation of expressions",c:C6},
+{n:7,t:"Queue: Job / Order Scheduling",d:"Array based queue with add, delete and display",c:C7},
+{n:8,t:"Binary Search Tree",d:"Insert, inorder, height, minimum, mirror and search",c:C8},
+{n:9,t:"Graph: Adjacency Matrix and BFS",d:"Flight paths between cities and connectivity check using BFS",c:C9}
+];
+const grid=document.getElementById('grid'),list=document.getElementById('list'),q=document.getElementById('q');
+document.getElementById('count').textContent=E.length+' Experiments (Exp 01 to Exp '+String(E.length).padStart(2,'0')+') \u2022 Instant One-Click Copy';
+function copy(text,btn){
+  const done=()=>{const o=btn.dataset.l;btn.textContent='Copied \u2713';btn.classList.add('ok');setTimeout(()=>{btn.textContent=o;btn.classList.remove('ok')},1500)};
+  const fb=()=>{const a=document.createElement('textarea');a.value=text;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}a.remove();done()};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,fb)}else fb();
+}
+function btn(e){const b=document.createElement('button');b.className='copy';b.textContent=b.dataset.l='Copy Experiment '+e.n;b.onclick=ev=>{ev.preventDefault();ev.stopPropagation();copy(e.c,b)};return b}
+E.forEach(e=>{
+  const c=document.createElement('div');c.className='card';c.id='c'+e.n;
+  c.innerHTML='<h3>Experiment '+e.n+' <span class="tag">C</span></h3><div class="d"></div>';
+  c.querySelector('.d').textContent=e.t+' \u2013 '+e.d;
+  c.appendChild(btn(e));grid.appendChild(c);
+  const d=document.createElement('details');d.id='d'+e.n;
+  const s=document.createElement('summary');const sp=document.createElement('span');sp.textContent='Experiment '+e.n+' \u2013 '+e.t;
+  s.appendChild(sp);s.appendChild(btn(e));d.appendChild(s);
+  const p=document.createElement('pre');p.textContent=e.c;d.appendChild(p);list.appendChild(d);
+});
+q.addEventListener('input',()=>{
+  const v=q.value.trim().toLowerCase();let any=false;
+  E.forEach(e=>{
+    const m=!v||('experiment '+e.n+' '+e.t+' '+e.d+' '+e.c).toLowerCase().includes(v)||String(e.n)===v;
+    document.getElementById('c'+e.n).style.display=m?'':'none';
+    document.getElementById('d'+e.n).style.display=m?'':'none';
+    if(m)any=true;
+  });
+  document.getElementById('none').style.display=any?'none':'block';
+});
+document.getElementById('col').onclick=()=>list.querySelectorAll('details').forEach(d=>d.open=false);
+</script>
+</body>
+</html>
